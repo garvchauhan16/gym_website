@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ivory: #fbf8f3;
+  --color-sand: #f2ece1;
+  --color-line: #e4dbca;
+  --color-charcoal: #23262a;
+  --color-mist: #66665f;
+  --color-olive: #566343;
+  --color-olive-dark: #3f4a31;
+  --color-gold: #8f6f2f;
+  --color-gold-light: #d9c18b;
+  --color-gold-dark: #6e5421;
+  --color-forest: #1d221e;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 92px;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  body {
+    @apply bg-ivory font-sans text-charcoal antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+    line-height: 1.04;
+  }
+  ::selection {
+    background: var(--color-gold-light);
+    color: var(--color-charcoal);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-olive);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  img {
+    @apply max-w-full;
+  }
+}
+
+/* unlayered so it wins over per-heading font-bold utilities: keeps the serif light & elegant */
+h1, h2, h3, h4 {
+  font-weight: 500;
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+  .section-y {
+    @apply py-20 sm:py-28;
+  }
+  /* italic bronze accent used inside headings */
+  .text-gold-gradient {
+    font-style: italic;
+    background-image: linear-gradient(120deg, #b08d45, #8f6f2f 55%, #6e5421);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    padding-right: 0.06em;
+  }
+  .on-dark .text-gold-gradient,
+  .text-gold-gradient.on-dark {
+    background-image: linear-gradient(120deg, #efe0b6, #d9c18b 55%, #b8964f);
+  }
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.7s ease;
+  }
+  .btn-shine:hover::after {
+    transform: translateX(120%);
+  }
+  .field {
+    @apply w-full rounded-xl border border-line bg-white px-4 py-3.5 text-base text-charcoal placeholder:text-mist/60 transition-colors;
+  }
+  .field:hover {
+    border-color: #cfc3ac;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-olive);
+    box-shadow: 0 0 0 3px rgba(86, 99, 67, 0.18);
+  }
+  .field[aria-invalid='true'] {
+    border-color: #c0392b;
+  }
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+select.field {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23566343' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.75rem;
+}
+input[type='date'] {
+  min-height: 3.25rem;
+}
