@@ -1,47 +1,32 @@
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { WhatsAppIcon } from './icons.jsx';
-import { whatsappUrl, waMessages } from '../utils/whatsapp.js';
+import { whatsappUrl, waMessages, showWhatsapp } from '../utils/whatsapp.js';
+import { site } from '../config/site.js';
+import { duration, ease } from '../utils/motion.js';
 
-/** Floating WhatsApp button, visible on every page. */
+/**
+ * Floating WhatsApp button — tablet and desktop only. On phones the mobile CTA
+ * bar carries WhatsApp instead, and on /free-trial the form itself sends via
+ * WhatsApp, so a floating button there would only cover the form fields.
+ * The label expands on hover/focus only — no pulsing or auto-popups.
+ */
 export default function WhatsAppFloat() {
-  const [labelOpen, setLabelOpen] = useState(false);
-  // briefly reveal the label once after load to draw attention without being pushy
-  useEffect(() => {
-    const t1 = setTimeout(() => setLabelOpen(true), 3500);
-    const t2 = setTimeout(() => setLabelOpen(false), 8500);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, []);
-
+  if (!showWhatsapp()) return null;
   return (
     <motion.a
       href={whatsappUrl(waMessages.floating)}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat with Powerhouse Gym on WhatsApp"
-      initial={{ opacity: 0, scale: 0.6 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 1, type: 'spring', stiffness: 260, damping: 18 }}
-      onMouseEnter={() => setLabelOpen(true)}
-      onMouseLeave={() => setLabelOpen(false)}
-      onFocus={() => setLabelOpen(true)}
-      onBlur={() => setLabelOpen(false)}
-      className="fixed bottom-5 right-5 z-40 flex items-center gap-3 rounded-full bg-[#25D366] p-3.5 text-[#07240f] shadow-[0_10px_35px_-6px_rgba(37,211,102,0.7)] transition-transform hover:scale-105 active:scale-95 sm:bottom-7 sm:right-7"
+      aria-label={`Chat with ${site.name} on WhatsApp`}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: duration.base, delay: 0.8, ease }}
+      className={`group fixed bottom-7 right-7 z-40 hidden items-center rounded-full bg-[#25D366] p-3.5 text-[#062a12] shadow-[0_12px_30px_-12px_rgba(5,11,26,0.55)] ring-1 ring-black/5 transition-colors hover:bg-[#1fbd5a] md:flex`}
     >
-      <span
-        className={`overflow-hidden whitespace-nowrap text-sm font-semibold transition-all duration-300 ${
-          labelOpen ? 'max-w-[150px] pl-2 opacity-100' : 'max-w-0 opacity-0'
-        }`}
-      >
+      <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-semibold opacity-0 transition-all duration-300 group-hover:max-w-[140px] group-hover:pl-1.5 group-hover:pr-2 group-hover:opacity-100 group-focus-visible:max-w-[140px] group-focus-visible:pl-1.5 group-focus-visible:pr-2 group-focus-visible:opacity-100">
         Chat with us
       </span>
-      <span className="relative grid h-7 w-7 place-items-center">
-        <span className="absolute inset-0 animate-ping rounded-full bg-[#25D366]/50 motion-reduce:hidden" aria-hidden="true" />
-        <WhatsAppIcon className="relative h-7 w-7" />
-      </span>
+      <WhatsAppIcon className="h-6 w-6 shrink-0" />
     </motion.a>
   );
 }

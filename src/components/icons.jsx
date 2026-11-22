@@ -1,13 +1,13 @@
 import {
   Dumbbell, HeartPulse, Activity, Trophy, Flame, Medal, Sprout, Shirt, Sparkles, SprayCan, Undo2, Wind,
   Timer, Handshake, VolumeX, UserCheck, TriangleAlert, ShieldCheck, Waves, Target, Users, MessageCircle,
-  Settings2, Weight, Zap, TrendingUp, User,
+  Settings2, Weight, Zap, TrendingUp, User, Clock, MapPin, Phone,
 } from 'lucide-react';
 
 const map = {
   Dumbbell, HeartPulse, Activity, Trophy, Flame, Medal, Sprout, Shirt, Sparkles, SprayCan, Undo2, Wind,
   Timer, Handshake, VolumeX, UserCheck, TriangleAlert, ShieldCheck, Waves, Target, Users, MessageCircle,
-  Settings2, Weight, Zap, TrendingUp, User,
+  Settings2, Weight, Zap, TrendingUp, User, Clock, MapPin, Phone,
 };
 
 /** Resolve a lucide icon by the string name used in config/content.js */

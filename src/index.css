@@ -1,19 +1,46 @@
 @import 'tailwindcss';
 
+/* ── Victory Fitness design tokens ─────────────────────────────────────────────
+   Deep navy + white + a restrained electric blue. Contrast checked (WCAG AA):
+   blue-500 on white 5.25:1 · white on blue-500 5.25:1 · blue-300 on navy-900 7.4:1
+   slate on white 5.9:1. */
 @theme {
-  --color-ivory: #fbf8f3;
-  --color-sand: #f2ece1;
-  --color-line: #e4dbca;
-  --color-charcoal: #23262a;
-  --color-mist: #66665f;
-  --color-olive: #566343;
-  --color-olive-dark: #3f4a31;
-  --color-gold: #8f6f2f;
-  --color-gold-light: #d9c18b;
-  --color-gold-dark: #6e5421;
-  --color-forest: #1d221e;
-  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  /* Navy scale (dark surfaces, headings) */
+  --color-navy-950: #050b1a;
+  --color-navy-900: #0a1428;
+  --color-navy-800: #111e3a;
+  --color-navy-700: #1a2b4f;
+  --color-navy-600: #2a3d66;
+
+  /* Electric blue accent — use sparingly */
+  --color-blue-600: #1747d6;
+  --color-blue-500: #1f5bff;
+  --color-blue-300: #7aa2ff;
+  --color-blue-100: #e6edff;
+
+  /* Neutrals */
+  --color-ink: #0b1220;
+  --color-slate: #5b6577;
+  --color-surface: #ffffff;
+  --color-cloud: #f4f6fa;
+  --color-hairline: #e3e7ef;
+
+  --font-display: 'Archivo', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* ── Type scale (fluid). Usage: text-display-1, text-display-2, text-heading-1, text-heading-2 */
+  --text-display-1: clamp(2.75rem, 1.55rem + 5.2vw, 6rem);
+  --text-display-1--line-height: 0.95;
+  --text-display-1--letter-spacing: -0.035em;
+  --text-display-2: clamp(2.5rem, 1.75rem + 3.6vw, 4.75rem);
+  --text-display-2--line-height: 0.98;
+  --text-display-2--letter-spacing: -0.03em;
+  --text-heading-1: clamp(2rem, 1.45rem + 2.3vw, 3.25rem);
+  --text-heading-1--line-height: 1.02;
+  --text-heading-1--letter-spacing: -0.025em;
+  --text-heading-2: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+  --text-heading-2--line-height: 1.15;
+  --text-heading-2--letter-spacing: -0.015em;
 }
 
 @layer base {
@@ -28,19 +55,22 @@
     }
   }
   body {
-    @apply bg-ivory font-sans text-charcoal antialiased;
+    @apply bg-surface font-sans text-ink antialiased;
     overflow-x: hidden;
   }
   h1, h2, h3, h4 {
-    @apply font-display tracking-tight;
-    line-height: 1.04;
+    @apply font-display;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    font-stretch: 105%;
+    line-height: 1.02;
   }
   ::selection {
-    background: var(--color-gold-light);
-    color: var(--color-charcoal);
+    background: var(--color-blue-500);
+    color: #fff;
   }
   :focus-visible {
-    outline: 2px solid var(--color-olive);
+    outline: 2px solid var(--color-blue-500);
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -49,70 +79,64 @@
   }
 }
 
-/* unlayered so it wins over per-heading font-bold utilities: keeps the serif light & elegant */
-h1, h2, h3, h4 {
-  font-weight: 500;
-}
-
 @layer components {
   .container-x {
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
   }
   .section-y {
-    @apply py-20 sm:py-28;
+    @apply py-20 md:py-28 lg:py-32;
   }
-  /* italic bronze accent used inside headings */
-  .text-gold-gradient {
-    font-style: italic;
-    background-image: linear-gradient(120deg, #b08d45, #8f6f2f 55%, #6e5421);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    padding-right: 0.06em;
+  /* Small uppercase label above headings, with a square electric-blue marker. */
+  .eyebrow {
+    @apply inline-flex items-center gap-2.5 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-blue-500;
   }
-  .on-dark .text-gold-gradient,
-  .text-gold-gradient.on-dark {
-    background-image: linear-gradient(120deg, #efe0b6, #d9c18b 55%, #b8964f);
-  }
-  .btn-shine {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-  }
-  .btn-shine::after {
+  .eyebrow::before {
     content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
-    transform: translateX(-120%);
-    transition: transform 0.7s ease;
+    @apply block h-1.5 w-1.5 shrink-0 bg-current;
   }
-  .btn-shine:hover::after {
-    transform: translateX(120%);
+  .on-dark .eyebrow,
+  .eyebrow.on-dark {
+    @apply text-blue-300;
+  }
+  /* Heading accent: solid electric blue, never a gradient. */
+  .text-accent {
+    color: var(--color-blue-500);
+  }
+  .on-dark .text-accent,
+  .text-accent.on-dark {
+    color: var(--color-blue-300);
   }
   .field {
-    @apply w-full rounded-xl border border-line bg-white px-4 py-3.5 text-base text-charcoal placeholder:text-mist/60 transition-colors;
+    @apply min-h-12 w-full rounded-xl border border-hairline bg-white px-4 py-3 text-base text-ink transition-[border-color,box-shadow] duration-150 placeholder:text-slate/70;
   }
   .field:hover {
-    border-color: #cfc3ac;
+    border-color: #c5ccda;
   }
   .field:focus {
     outline: none;
-    border-color: var(--color-olive);
-    box-shadow: 0 0 0 3px rgba(86, 99, 67, 0.18);
+    border-color: var(--color-blue-500);
+    box-shadow: 0 0 0 4px rgba(31, 91, 255, 0.14);
   }
   .field[aria-invalid='true'] {
-    border-color: #c0392b;
+    border-color: #d92d20;
+  }
+  .field[aria-invalid='true']:focus {
+    box-shadow: 0 0 0 4px rgba(217, 45, 32, 0.14);
   }
 }
 
 html {
   scrollbar-gutter: stable;
 }
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 select.field {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23566343' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%231f5bff' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   padding-right: 2.75rem;

@@ -1,9 +1,11 @@
-import { site } from '../config/site.js';
+import { site, hasWhatsapp } from '../config/site.js';
 
 const digits = (s) => String(s ?? '').replace(/\D/g, '');
 
 /** True once the owner has entered a plausible international WhatsApp number. */
-export const isWhatsappConfigured = () => digits(site.whatsappNumber).length >= 8;
+export const isWhatsappConfigured = hasWhatsapp;
+/** Whether WhatsApp buttons are shown (with or without a confirmed number). */
+export const showWhatsapp = () => site.showWhatsappButtons !== false || hasWhatsapp();
 
 /**
  * Official WhatsApp click-to-chat URL: https://wa.me/<number>?text=<encoded>
@@ -18,7 +20,18 @@ export function whatsappUrl(message = '') {
 
 /** Click-to-call. Only usable once the owner has entered a public phone number. */
 export const hasPhone = () => String(site.phone ?? '').replace(/[^\d+]/g, '').length >= 5;
-export const telHref = () => `tel:${String(site.phone).replace(/[^\d+]/g, '')}`;
+/** Prefers the international form (+91…) so the link works from any phone or desktop dialler. */
+export const telHref = () => `tel:${String(site.phoneIntl || site.phone).replace(/[^\d+]/g, '')}`;
+
+/**
+ * The channel every "enquire" button uses: WhatsApp once a confirmed number is set,
+ * otherwise a call to the verified phone number. Nothing ever opens a WhatsApp chat
+ * that can't reach the gym.
+ */
+export const contactChannel = (message = '') =>
+  isWhatsappConfigured()
+    ? { kind: 'whatsapp', href: whatsappUrl(message), external: true }
+    : { kind: 'call', href: telHref(), external: false };
 
 const name = site.name;
 

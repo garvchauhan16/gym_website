@@ -1,21 +1,22 @@
 import PageHero from '../components/PageHero.jsx';
 import Gallery from '../components/Gallery.jsx';
 import CTABanner from '../components/CTABanner.jsx';
-import { SampleTag } from '../components/ui.jsx';
+import { PhotoTag } from '../components/ui.jsx';
+import { site } from '../config/site.js';
 
 export default function GalleryPage() {
   return (
     <>
-      <PageHero eyebrow="Facilities & Gallery" title="Step Inside" accent="Powerhouse Gym">
-        Explore the training zones, equipment and atmosphere.
+      <PageHero eyebrow="Gallery" title="Find Us at" accent="SS Plaza">
+        The real {site.name} building, alongside illustrative training photography until the gym’s own interior photos are added.
       </PageHero>
-      <section className="section-y">
+      <section className="section-y bg-white">
         <div className="container-x">
-          <p className="mb-8 flex flex-wrap items-center gap-2 text-sm text-mist">
-            <SampleTag>Placeholder images</SampleTag>
-            {/* SampleTag hides itself at launch; the explanatory note goes with it */}
-            <span className="text-xs">Stock photos are shown until real gym photographs are added.</span>
-          </p>
+          {/* Always shown: stock photography must never pass for the gym's own premises. */}
+          <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-hairline bg-cloud p-4 text-sm text-slate sm:mb-8 sm:flex-row sm:items-center sm:gap-6 sm:p-5">
+            <span className="flex items-center gap-2"><PhotoTag actual /> A real photograph of {site.name}</span>
+            <span className="flex items-center gap-2"><PhotoTag className="!bg-navy-900" /> Licensed stock image — not the gym’s equipment or members</span>
+          </div>
           <Gallery />
         </div>
       </section>

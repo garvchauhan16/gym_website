@@ -1,79 +1,114 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Check } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { site } from '../config/site.js';
-import { Button } from './ui.jsx';
+import { Check } from 'lucide-react';
+import { site, filled, hasCity, trial } from '../config/site.js';
+import { copy } from '../config/content.js';
+import { Button, Eyebrow, PhotoTag } from './ui.jsx';
+import { fadeUp } from '../utils/motion.js';
+import Img from './Img.jsx';
 
-const rise = (i) => ({
-  initial: { opacity: 0, y: 28 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, delay: 0.1 + i * 0.1, ease: [0.22, 1, 0.36, 1] },
-});
+/** Splits "Build Strength. Define Yourself." into a white line and an accent line. */
+function splitTagline(t) {
+  const parts = String(t).split(/(?<=[.!?])\s+/);
+  return parts.length > 1 ? [parts[0], parts.slice(1).join(' ')] : [t, ''];
+}
+
+/**
+ * Facts shown in the hero's bottom strip — verified details from config/site.js
+ * only (location, weekday hours, phone), plus how to request a trial.
+ */
+function heroFacts() {
+  const weekday = site.hours.find((h) => /monday/i.test(h.days) && filled(h.time));
+  return [
+    hasCity() && { label: 'Location', value: `Bhabat, ${site.city}` },
+    weekday && { label: weekday.days.replace(' – ', '–'), value: weekday.time.replace(/:00/g, '') },
+    filled(site.phone) && { label: 'Call', value: site.phone, href: `tel:${site.phoneIntl || site.phone}` },
+    { label: trial.label, value: 'Request online' },
+  ].filter(Boolean).slice(0, 4);
+}
+
+const mdCols = { 2: 'md:grid-cols-2', 3: 'md:grid-cols-3', 4: 'md:grid-cols-4' };
 
 export default function Hero() {
+  const [line1, line2] = splitTagline(site.tagline);
+  const facts = heroFacts();
+
   return (
-    <section className="relative isolate overflow-hidden pt-28 sm:pt-32 lg:pt-0" aria-labelledby="hero-title">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_70%_at_88%_10%,rgba(217,193,139,0.35),transparent_60%),radial-gradient(50%_60%_at_0%_100%,rgba(86,99,67,0.10),transparent_60%)]" aria-hidden="true" />
-      <div className="container-x grid items-center gap-12 pb-16 lg:min-h-[100svh] lg:grid-cols-12 lg:gap-10 lg:pb-20 lg:pt-28">
-        <div className="lg:col-span-6">
-          <motion.p {...rise(0)} className="mb-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.26em] text-gold">
-            <span className="h-px w-10 bg-gold" aria-hidden="true" />
-            {site.name}
-          </motion.p>
-          <h1 id="hero-title" className="text-[clamp(2.9rem,7.4vw,6.2rem)] leading-[0.98] text-charcoal">
-            <motion.span {...rise(1)} className="block">Build Strength.</motion.span>
-            <motion.span {...rise(2)} className="block text-gold-gradient">Define Yourself.</motion.span>
-          </h1>
-          <motion.p {...rise(3)} className="mt-7 max-w-lg text-pretty text-base leading-relaxed text-mist sm:text-lg">
-            A premium, welcoming fitness club for people who train with purpose. Serious equipment, a respectful
-            atmosphere, and a community that helps you get sharper every session.
-          </motion.p>
-          <motion.div {...rise(4)} className="mt-9 flex flex-col gap-3.5 sm:flex-row">
-            <Button to="/free-trial" className="sm:min-w-[230px]">Book Your Free Trial</Button>
-            <Button to="/memberships" variant="outline" className="sm:min-w-[230px]">Explore Memberships</Button>
+    <section
+      data-nav-theme="dark"
+      className="on-dark relative isolate flex flex-col overflow-hidden bg-navy-950 text-white lg:min-h-[min(100svh,980px)]"
+      aria-labelledby="hero-title"
+    >
+      {/* Photo + legibility overlay (stronger on the copy side) */}
+      <Img
+        src="/images/hero.jpg"
+        alt=""
+        sizes="100vw"
+        loading="eager"
+        fetchPriority="high"
+        className="absolute inset-0 -z-20 h-full w-full object-cover object-[65%_center] opacity-60"
+      />
+      <div
+        className="absolute inset-0 -z-10 bg-navy-950/70 lg:bg-transparent lg:bg-[linear-gradient(90deg,rgba(5,11,26,0.94)_0%,rgba(5,11,26,0.82)_45%,rgba(5,11,26,0.35)_100%)]"
+        aria-hidden="true"
+      />
+
+      <div className="container-x relative flex flex-1 flex-col justify-center pb-14 pt-32 sm:pb-16 sm:pt-40 lg:pb-20 lg:pt-36">
+        <PhotoTag className="absolute bottom-4 right-5 sm:right-6" />
+        <div className="max-w-[46rem]">
+          <motion.div {...fadeUp(0)}>
+            <Eyebrow dark className="mb-6 sm:mb-8">
+              {site.name}{hasCity() ? ` · ${site.city}` : ''}
+            </Eyebrow>
           </motion.div>
-          <motion.ul {...rise(5)} className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-mist">
-            {['Request in under a minute', 'No payment to enquire', 'Reply on WhatsApp'].map((t) => (
-              <li key={t} className="flex items-center gap-2"><Check size={16} className="text-olive" aria-hidden="true" />{t}</li>
+
+          <h1 id="hero-title" className="text-display-1 text-balance">
+            <motion.span {...fadeUp(0.05, 18)} className="block">{line1}</motion.span>
+            {line2 && <motion.span {...fadeUp(0.12, 18)} className="block text-accent">{line2}</motion.span>}
+          </h1>
+
+          <motion.p {...fadeUp(0.2)} className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-white/75 sm:mt-8 sm:text-lg">
+            {copy.heroIntro}
+          </motion.p>
+
+          <motion.div {...fadeUp(0.28)} className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row">
+            <Button to="/free-trial" size="lg">{trial.cta}</Button>
+            <Button to="/memberships" size="lg" variant="outlineLight">Explore Memberships</Button>
+          </motion.div>
+
+          <motion.ul {...fadeUp(0.34)} className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/65">
+            {['Request in under a minute', 'No payment to enquire'].map((t) => (
+              <li key={t} className="flex items-center gap-2">
+                <Check size={15} className="text-blue-300" aria-hidden="true" />
+                {t}
+              </li>
             ))}
           </motion.ul>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="relative lg:col-span-6"
-        >
-          <div className="relative ml-auto aspect-[4/4.4] w-full max-w-xl overflow-hidden rounded-t-[999px] rounded-b-[2rem] shadow-[0_40px_90px_-40px_rgba(35,38,42,0.55)] sm:aspect-[4/4.6]">
-            <img
-              src="/images/atmosphere.jpg"
-              alt="Bright, modern gym floor with spin bikes and training equipment"
-              fetchPriority="high"
-              className="h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-forest/30 via-transparent to-transparent" aria-hidden="true" />
-          </div>
-          <img
-            src="/images/barbell.jpg"
-            alt="Athlete setting up a loaded barbell"
-            loading="eager"
-            className="absolute -bottom-6 left-0 hidden aspect-square w-40 rounded-3xl border-[6px] border-ivory object-cover shadow-xl sm:block lg:-left-6 lg:w-48"
-          />
-          <Link
-            to="/free-trial"
-            className="group absolute -bottom-5 right-2 flex items-center gap-3 rounded-2xl border border-line bg-white px-5 py-4 shadow-[0_20px_50px_-20px_rgba(35,38,42,0.5)] transition-transform hover:-translate-y-1 sm:right-0 lg:-right-2"
-          >
-            <span className="text-left">
-              <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-gold">First visit</span>
-              <span className="block font-display text-xl text-charcoal">Try a free session</span>
-            </span>
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-olive text-white transition-transform group-hover:rotate-45">
-              <ArrowUpRight size={18} aria-hidden="true" />
-            </span>
-          </Link>
-        </motion.div>
       </div>
+
+      {/* Key facts strip — hairline dividers come from the 1px grid gap */}
+      <motion.div {...fadeUp(0.4, 10)} className="border-t border-white/10 bg-navy-950">
+        <div className="container-x">
+          <dl className={`grid grid-cols-2 gap-px bg-white/10 ${mdCols[facts.length] ?? 'md:grid-cols-4'}`}>
+            {facts.map((f, i) => {
+              const lastOdd = facts.length % 2 === 1 && i === facts.length - 1;
+              return (
+                <div
+                  key={f.label}
+                  className={`bg-navy-950 py-5 sm:py-6 ${i % 2 === 0 ? 'pr-4' : 'px-4 sm:px-6'} ${lastOdd ? 'col-span-2 md:col-span-1' : ''} ${
+                    i === 0 ? 'md:pr-6' : 'md:px-6 lg:px-8'
+                  }`}
+                >
+                  <dt className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">{f.label}</dt>
+                  <dd className="mt-1.5 font-display text-[15px] font-bold text-white sm:text-lg">
+                    {f.href ? <a href={f.href} className="transition-colors hover:text-blue-300">{f.value}</a> : f.value}
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
+        </div>
+      </motion.div>
     </section>
   );
 }

@@ -1,53 +1,111 @@
-import { MessageCircle, CalendarCheck, Dumbbell } from 'lucide-react';
+import { CalendarCheck, Dumbbell, Phone, BadgeIndianRupee, ListChecks, Ticket, Sparkles } from 'lucide-react';
 import PageHero from '../components/PageHero.jsx';
 import PricingCard from '../components/PricingCard.jsx';
 import CTABanner from '../components/CTABanner.jsx';
-import { Reveal, SectionHeading, Button } from '../components/ui.jsx';
-import { site } from '../config/site.js';
+import ContactButton from '../components/ContactButton.jsx';
+import { Reveal, SectionHeading, Button, SampleTag } from '../components/ui.jsx';
+import { site, trial, hasWhatsapp } from '../config/site.js';
+import { waMessages } from '../utils/whatsapp.js';
+import { stagger } from '../utils/motion.js';
+import { copy } from '../config/content.js';
 
 const steps = [
-  { icon: CalendarCheck, title: 'Try a session', text: 'Request a free trial to experience the gym first-hand.' },
-  { icon: MessageCircle, title: 'Ask us anything', text: 'Message us on WhatsApp for current pricing and plan advice.' },
-  { icon: Dumbbell, title: 'Start training', text: 'Pick the plan that fits and begin your journey.' },
+  { icon: Phone, title: hasWhatsapp() ? 'Get in touch' : 'Call the gym', text: `Ask the team for current membership options and pricing${site.phone ? ` on ${site.phone}` : ''}.` },
+  { icon: CalendarCheck, title: 'Request a trial', text: `Ask about a ${trial.noun} to see the gym for yourself before you decide.` },
+  { icon: Dumbbell, title: 'Start training', text: 'Choose the plan that fits your goals and schedule.' },
+];
+
+/** Neutral questions a visitor can ask — no claims about what the gym offers. */
+const askAbout = [
+  { icon: BadgeIndianRupee, title: 'Current prices', text: 'For each plan length.' },
+  { icon: ListChecks, title: 'What’s included', text: 'Access and any extras per plan.' },
+  { icon: Ticket, title: 'Joining fees', text: 'Whether any one-time fee applies.' },
+  { icon: Sparkles, title: 'Current offers', text: 'Any seasonal or introductory deals.' },
 ];
 
 export default function Memberships() {
   return (
     <>
       <PageHero eyebrow="Memberships" title="Invest In" accent="Your Strength">
-        Simple plans, no complicated tiers. Choose the commitment that suits your goals — longer plans offer better value per month.
+        {copy.membershipsHero}
       </PageHero>
 
-      <section className="section-y">
+      {/* Plans */}
+      <section className="section-y bg-white" aria-label="Membership options">
         <div className="container-x">
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {!site.plansConfirmed && (
+            <p className="mb-8 flex flex-wrap items-center gap-2 text-sm text-slate sm:mb-10">
+              <SampleTag>Plan options to be confirmed</SampleTag>
+              <span>Plan lengths are shown for layout; prices and inclusions come directly from the gym.</span>
+            </p>
+          )}
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-4">
             {site.memberships.map((m, i) => (
-              <Reveal key={m.id} delay={i * 0.08} className="h-full"><PricingCard plan={m} /></Reveal>
+              <Reveal key={m.id} delay={(i % 4) * stagger} className="h-full">
+                <PricingCard plan={m} />
+              </Reveal>
             ))}
           </div>
-          <p className="mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed text-mist">
-            Prices, inclusions and offers are confirmed by the Powerhouse Gym team on WhatsApp. Plan details shown here are a
-            summary and may be updated.
-          </p>
         </div>
       </section>
 
-      <section className="section-y bg-sand">
+      {/* What to ask */}
+      <section className="on-dark section-y bg-navy-900 text-white" aria-label="What to ask the gym">
+        <div className="container-x grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <Reveal className="lg:col-span-5">
+            <SectionHeading dark eyebrow="Before You Join" title="Questions to Ask" accent="The Team">
+              Pricing is quoted directly by {site.name}, so you always get current figures. These are worth asking about.
+            </SectionHeading>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <ContactButton
+                message={waMessages.general}
+                labels={{ whatsapp: 'Ask on WhatsApp', call: `Call ${site.phone}` }}
+                variants={{ whatsapp: 'whatsapp', call: 'light' }}
+                size="lg"
+              />
+            </div>
+          </Reveal>
+          <Reveal delay={0.06} className="lg:col-span-7">
+            <ul className="grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2">
+              {askAbout.map((a) => (
+                <li key={a.title} className="flex gap-4 bg-navy-900 p-5 sm:p-7">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-white/10 bg-white/[0.04] text-blue-300">
+                    <a.icon size={20} aria-hidden="true" />
+                  </span>
+                  <div>
+                    <h3 className="font-display text-lg font-extrabold text-white">{a.title}</h3>
+                    <p className="mt-1 text-[15px] text-white/65">{a.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="section-y bg-white">
         <div className="container-x">
           <Reveal>
             <SectionHeading eyebrow="How It Works" title="Getting Started Is" accent="Easy" align="center" />
           </Reveal>
-          <ol className="mt-14 grid gap-6 md:grid-cols-3">
+          <ol className="mt-10 grid gap-4 sm:mt-14 md:grid-cols-3 md:gap-5">
             {steps.map((s, i) => (
-              <Reveal as="li" key={s.title} delay={i * 0.1} className="relative rounded-3xl border border-line bg-ivory p-8">
-                <span className="absolute right-6 top-4 font-display text-7xl font-bold text-charcoal/[0.05]" aria-hidden="true">0{i + 1}</span>
-                <s.icon className="text-gold" size={30} aria-hidden="true" />
-                <h3 className="mt-6 text-2xl font-bold">{s.title}</h3>
-                <p className="mt-3 text-mist">{s.text}</p>
+              <Reveal as="li" key={s.title} delay={i * stagger} className="relative rounded-2xl border border-hairline bg-white p-6 sm:p-8">
+                <span className="absolute right-6 top-6 font-display text-sm font-bold tabular-nums text-slate/50" aria-hidden="true">
+                  0{i + 1}
+                </span>
+                <span className="grid h-11 w-11 place-items-center rounded-lg bg-blue-100 text-blue-500">
+                  <s.icon size={20} aria-hidden="true" />
+                </span>
+                <h3 className="mt-5 text-heading-2 text-ink">{s.title}</h3>
+                <p className="mt-2 text-slate">{s.text}</p>
               </Reveal>
             ))}
           </ol>
-          <Reveal className="mt-12 text-center"><Button to="/free-trial">Book Your Free Trial</Button></Reveal>
+          <Reveal className="mt-10 flex justify-center sm:mt-12">
+            <Button to="/free-trial" size="lg" className="w-full sm:w-auto">{trial.cta}</Button>
+          </Reveal>
         </div>
       </section>
 
