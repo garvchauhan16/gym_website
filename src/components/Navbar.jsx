@@ -134,9 +134,6 @@ export default function Navbar() {
               <WhatsAppIcon className="h-[18px] w-[18px]" />
             </a>
             )}
-            <Button to="/free-trial" size="sm" className="shrink-0 whitespace-nowrap sm:px-5">
-              {site.freeTrial ? 'Free Trial' : 'Book a Trial'}
-            </Button>
             <button
               ref={toggleRef}
               type="button"

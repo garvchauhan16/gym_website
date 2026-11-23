@@ -4,7 +4,6 @@ import { MotionConfig, motion } from 'framer-motion';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import WhatsAppFloat from './components/WhatsAppFloat.jsx';
-import MobileCTABar from './components/MobileCTABar.jsx';
 import { useSeo } from './hooks/useSeo.js';
 import { isOn } from './config/site.js';
 import Home from './pages/Home.jsx';
@@ -122,7 +121,6 @@ export default function App() {
       </motion.main>
       <Footer />
       <WhatsAppFloat />
-      <MobileCTABar />
     </MotionConfig>
   );
 }

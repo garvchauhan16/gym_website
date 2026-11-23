@@ -118,7 +118,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-x flex flex-col gap-2 pb-24 pt-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between md:pb-6">
+        <div className="container-x flex flex-col gap-2 pb-6 pt-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
           <p className="max-w-xl sm:text-right">
             Photos marked “Illustrative” are licensed stock images, not {site.name}’s premises.

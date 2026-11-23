@@ -5,9 +5,8 @@ import { site } from '../config/site.js';
 import { duration, ease } from '../utils/motion.js';
 
 /**
- * Floating WhatsApp button — tablet and desktop only. On phones the mobile CTA
- * bar carries WhatsApp instead, and on /free-trial the form itself sends via
- * WhatsApp, so a floating button there would only cover the form fields.
+ * Floating WhatsApp button — tablet and desktop only, so it never covers
+ * content on small phone screens.
  * The label expands on hover/focus only — no pulsing or auto-popups.
  */
 export default function WhatsAppFloat() {
