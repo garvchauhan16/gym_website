@@ -59,9 +59,9 @@ export default function ContactSection() {
                 {hoursSet.length ? (
                   <dl className="space-y-1">
                     {site.hours.map((h) => (
-                      <div key={h.days} className="flex justify-between gap-6">
-                        <dt className="text-slate">{h.days}</dt>
-                        <dd className={filled(h.time) ? '' : 'text-slate/80'}>{filled(h.time) ? h.time : 'To be confirmed'}</dd>
+                      <div key={h.days} className="flex justify-between gap-6 max-sm:flex-col max-sm:gap-0.5 max-sm:pb-2 max-sm:last:pb-0">
+                        <dt className="text-slate max-lg:whitespace-nowrap">{h.days}</dt>
+                        <dd className={`max-lg:whitespace-nowrap ${filled(h.time) ? '' : 'text-slate/80'}`}>{filled(h.time) ? h.time : 'To be confirmed'}</dd>
                       </div>
                     ))}
                   </dl>

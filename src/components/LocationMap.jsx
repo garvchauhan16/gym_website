@@ -74,9 +74,9 @@ export default function LocationMap({ showHours = false, className = '' }) {
             <Clock size={18} aria-hidden="true" className="mt-1 shrink-0 text-blue-300" />
             <dl className="w-full space-y-1 text-[14px]">
               {site.hours.map((h) => (
-                <div key={h.days} className="flex justify-between gap-4">
-                  <dt className="text-white/60">{h.days}</dt>
-                  <dd className={filled(h.time) ? 'font-semibold' : 'text-white/45'}>{filled(h.time) ? h.time : 'To be confirmed'}</dd>
+                <div key={h.days} className="flex justify-between gap-4 max-sm:flex-col max-sm:gap-0.5 max-sm:pb-2 max-sm:last:pb-0">
+                  <dt className="text-white/60 max-lg:whitespace-nowrap">{h.days}</dt>
+                  <dd className={`max-lg:whitespace-nowrap ${filled(h.time) ? 'font-semibold' : 'text-white/45'}`}>{filled(h.time) ? h.time : 'To be confirmed'}</dd>
                 </div>
               ))}
             </dl>

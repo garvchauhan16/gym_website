@@ -21,9 +21,13 @@ const tiles = [
 /** Laptop layout fills 3 columns beside the featured tile; fewer tiles shrink the grid. */
 const lgCols = { 3: 'lg:grid-cols-4', 2: 'lg:grid-cols-3', 1: 'lg:grid-cols-2' };
 
+/** Tablet uses 3 columns only when the tiles fill every row; otherwise it keeps the 2-column phone layout. */
+const tabletThree = tiles.length % 3 === 0;
+
 /**
  * One-click access to every key journey.
- * Phone: 2 cols (featured spans the row) · Tablet: 3 cols (featured spans the row)
+ * Phone: 2 cols (featured spans the row) · Tablet: 3 cols when the tiles fill
+ * every row, otherwise 2 (featured spans the row)
  * Laptop+: 4 cols, featured tile spans two rows on the left.
  */
 export default function QuickActions() {
@@ -39,11 +43,11 @@ export default function QuickActions() {
 
         <Reveal>
           <ul
-            className={`grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline md:grid-cols-3 ${
+            className={`grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline ${tabletThree ? 'md:grid-cols-3' : ''} ${
               lgCols[Math.ceil(tiles.length / 2)] ?? 'lg:grid-cols-4'
             }`}
           >
-            <li className="col-span-2 md:col-span-3 lg:col-span-1 lg:row-span-2">
+            <li className={`col-span-2 ${tabletThree ? 'md:col-span-3' : ''} lg:col-span-1 lg:row-span-2`}>
               <Link
                 to={featured.to}
                 className="group flex h-full min-h-[148px] flex-col justify-between gap-6 bg-blue-500 p-5 text-white transition-colors hover:bg-blue-600 sm:p-6 lg:p-7"
@@ -62,7 +66,7 @@ export default function QuickActions() {
             </li>
             {tiles.map((t, i) => (
               // An odd last tile spans the remaining width on phones so rows stay complete
-              <li key={t.to} className={tiles.length % 2 === 1 && i === tiles.length - 1 ? 'col-span-2 md:col-span-1' : ''}>
+              <li key={t.to} className={tiles.length % 2 === 1 && i === tiles.length - 1 ? `col-span-2 ${tabletThree ? 'md:col-span-1' : 'lg:col-span-1'}` : ''}>
                 <Link
                   to={t.to}
                   className="group flex h-full min-h-[124px] flex-col justify-between gap-5 bg-white p-4 text-ink transition-colors hover:bg-cloud sm:p-6"

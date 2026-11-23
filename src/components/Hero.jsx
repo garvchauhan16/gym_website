@@ -26,7 +26,8 @@ function heroFacts() {
   ].filter(Boolean).slice(0, 4);
 }
 
-const mdCols = { 2: 'md:grid-cols-2', 3: 'md:grid-cols-3', 4: 'md:grid-cols-4' };
+// Phones and tablets keep the 2×2 strip; the single row starts at laptop width.
+const lgCols = { 2: 'lg:grid-cols-2', 3: 'lg:grid-cols-3', 4: 'lg:grid-cols-4' };
 
 export default function Hero() {
   const [line1, line2] = splitTagline(site.tagline);
@@ -89,14 +90,14 @@ export default function Hero() {
       {/* Key facts strip — hairline dividers come from the 1px grid gap */}
       <motion.div {...fadeUp(0.4, 10)} className="border-t border-white/10 bg-navy-950">
         <div className="container-x">
-          <dl className={`grid grid-cols-2 gap-px bg-white/10 ${mdCols[facts.length] ?? 'md:grid-cols-4'}`}>
+          <dl className={`grid grid-cols-2 gap-px bg-white/10 ${lgCols[facts.length] ?? 'lg:grid-cols-4'}`}>
             {facts.map((f, i) => {
               const lastOdd = facts.length % 2 === 1 && i === facts.length - 1;
               return (
                 <div
                   key={f.label}
-                  className={`bg-navy-950 py-5 sm:py-6 ${i % 2 === 0 ? 'pr-4' : 'px-4 sm:px-6'} ${lastOdd ? 'col-span-2 md:col-span-1' : ''} ${
-                    i === 0 ? 'md:pr-6' : 'md:px-6 lg:px-8'
+                  className={`bg-navy-950 py-5 sm:py-6 ${i % 2 === 0 ? 'pr-4' : 'px-4 sm:px-6'} ${lastOdd ? 'col-span-2 lg:col-span-1' : ''} ${
+                    i === 0 ? 'lg:pr-6' : 'lg:px-8'
                   }`}
                 >
                   <dt className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45">{f.label}</dt>

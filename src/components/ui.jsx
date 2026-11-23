@@ -104,15 +104,25 @@ export function SampleTag({ children = 'Sample', className = '' }) {
  * "Illustrative photo" for licensed stock. Always shown (not tied to the demo switch),
  * because stock photography must never pass for the gym's own premises.
  */
-export function PhotoTag({ actual = false, className = '' }) {
+export function PhotoTag({ actual = false, compact = false, className = '' }) {
   return (
     <span
-      className={`pointer-events-none inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.1em] backdrop-blur-md ${
+      className={`pointer-events-none inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.1em] backdrop-blur-md max-lg:shrink-0 max-lg:whitespace-nowrap ${
         actual ? 'bg-blue-500 text-white shadow-[0_6px_16px_-8px_rgba(31,91,255,0.8)]' : 'bg-navy-950/60 text-white/85 ring-1 ring-white/15'
       } ${className}`}
     >
       <span className={`h-1.5 w-1.5 rounded-full ${actual ? 'bg-white' : 'bg-white/60'}`} aria-hidden="true" />
-      {actual ? 'Actual photo' : 'Illustrative photo'}
+      {compact ? (
+        // Narrow photo tiles: drop the word "photo" on phones
+        <span>
+          {actual ? 'Actual' : 'Illustrative'}
+          <span className="max-sm:hidden"> photo</span>
+        </span>
+      ) : actual ? (
+        'Actual photo'
+      ) : (
+        'Illustrative photo'
+      )}
     </span>
   );
 }

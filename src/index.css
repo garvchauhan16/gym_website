@@ -128,6 +128,14 @@
 html {
   scrollbar-gutter: stable;
 }
+/* <picture> is display: contents (see Img.jsx), so its empty <source> would
+   otherwise become a grid item and push photo collages out of line.
+   Scoped to phones/tablets only. */
+@media (max-width: 1023.98px) {
+  picture > source {
+    display: none;
+  }
+}
 .no-scrollbar {
   scrollbar-width: none;
 }

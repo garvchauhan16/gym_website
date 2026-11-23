@@ -108,18 +108,18 @@ export default function Home() {
               </SectionHeading>
             </Reveal>
             <Reveal>
-              <ul className={`mt-12 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:mt-16 ${goodToKnow.length === 3 ? 'md:grid-cols-3' : 'sm:grid-cols-2'}`}>
+              <ul className={`mt-12 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:mt-16 ${goodToKnow.length === 3 ? 'lg:grid-cols-3' : 'sm:grid-cols-2'}`}>
                 {goodToKnow.map((w, i) => (
-                  <li key={w.title} className="relative flex gap-4 bg-navy-900 p-5 transition-colors duration-300 hover:bg-navy-800 md:block sm:p-8 lg:p-10">
+                  <li key={w.title} className="relative flex gap-4 bg-navy-900 p-5 transition-colors duration-300 hover:bg-navy-800 sm:gap-6 sm:p-8 lg:block lg:p-10">
                     <span className="absolute right-5 top-5 font-display text-sm font-bold text-white/25 sm:right-8 sm:top-8" aria-hidden="true">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-white/10 bg-white/[0.04] text-blue-300">
                       <Icon name={w.icon} size={20} />
                     </span>
-                    <div className="min-w-0 pr-6 md:pr-0">
-                      <h3 className="text-heading-2 text-white md:mt-6">{w.title}</h3>
-                      <p className="mt-2 text-[15px] leading-relaxed text-white/65 md:mt-3">{w.text}</p>
+                    <div className="min-w-0 pr-6 lg:pr-0">
+                      <h3 className="text-heading-2 text-white lg:mt-6">{w.title}</h3>
+                      <p className="mt-2 text-[15px] leading-relaxed text-white/65 lg:mt-3">{w.text}</p>
                     </div>
                   </li>
                 ))}

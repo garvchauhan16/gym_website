@@ -14,8 +14,8 @@ export default function GalleryPage() {
         <div className="container-x">
           {/* Always shown: stock photography must never pass for the gym's own premises. */}
           <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-hairline bg-cloud p-4 text-sm text-slate sm:mb-8 sm:flex-row sm:items-center sm:gap-6 sm:p-5">
-            <span className="flex items-center gap-2"><PhotoTag actual /> A real photograph of {site.name}</span>
-            <span className="flex items-center gap-2"><PhotoTag className="!bg-navy-900" /> Licensed stock image — not the gym’s equipment or members</span>
+            <span className="flex items-center gap-2 max-sm:flex-col max-sm:items-start max-sm:gap-1.5"><PhotoTag actual /> A real photograph of {site.name}</span>
+            <span className="flex items-center gap-2 max-sm:flex-col max-sm:items-start max-sm:gap-1.5"><PhotoTag className="!bg-navy-900" /> Licensed stock image — not the gym’s equipment or members</span>
           </div>
           <Gallery />
         </div>

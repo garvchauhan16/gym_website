@@ -169,7 +169,7 @@ export default function Gallery() {
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 />
                 <span className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-transparent to-transparent" aria-hidden="true" />
-                <PhotoTag actual={g.actual} className="absolute left-2 top-2 scale-90 origin-top-left sm:left-3 sm:top-3 sm:scale-100" />
+                <PhotoTag actual={g.actual} compact className="absolute left-2 top-2 scale-90 origin-top-left sm:left-3 sm:top-3 sm:scale-100" />
                 <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3 sm:p-5">
                   <span className="text-[13px] font-semibold leading-tight text-white sm:font-display sm:text-lg sm:font-bold">{g.caption ?? g.category}</span>
                   <span className="hidden h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-navy-900 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 sm:grid">
